@@ -1,32 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerCharacterController : MonoBehaviour
-{
-    public float speed = 3.0f;
-
-    private Rigidbody2D rigidbody2D;
+public class PlayerCharacterController : MonoBehaviour {
+    public Vector2 FacingDirection { get; set; }
+    public IPlayerState PlayerState { private get; set; }
+    public Rigidbody2D Rigidbody2D { get; private set; }
 
     // Start is called before the first frame update
-    void Start()
-    {
-        rigidbody2D = GetComponent<Rigidbody2D>();
+    void Start() {
+        FacingDirection = Vector2.left;
+        PlayerState = new ExploringPlayerState();
+        Rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        UpdatePosition();
-    }
-
-    private void UpdatePosition() {
-        float horizontalDelta = Input.GetAxis("Horizontal");
-
-        Vector2 move = new Vector2(horizontalDelta, 0);
-
-        Vector2 position = rigidbody2D.position;
-        position += move * speed * Time.deltaTime;
-        rigidbody2D.MovePosition(position);
+    void Update() {
+        PlayerState.HandleInput(this);
     }
 }

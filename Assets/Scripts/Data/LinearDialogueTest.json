@@ -1,0 +1,205 @@
+{
+  "introduction-nodes": [
+    {
+      "Id": { "Id": "001i" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Baldur, The Cheerful",
+        "PortraitPath": "Assets/Art/Resources/UI/Pleased.png"
+      },
+      "Prompt": "Well met friend! I am Baldur son of Odin & Frigg, the husband of Nanna, and the father of Forseti! I am here to test the linear dialogue nodes and the max text length of 200 for a single prompt. So..?",
+      "DestinationId": { "Id": "002i" }
+    },
+    {
+      "Id": { "Id": "002i" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": "Assets/Art/Resources/UI/Shocked.png"
+      },
+      "Prompt": "Well that sure is a mouth full. Um, so, may I ask you a few questions?",
+      "DestinationId": { "Id": "001g" }
+    }
+  ],
+  "greeting-nodes": [
+    {
+      "Id": { "Id": "001g" },
+      "Type": "Branching",
+      "Speaker": {
+        "Name": "Baldur, The Cheerful",
+        "PortraitPath": "Assets/Art/Resources/UI/Pleased.png"
+      },
+      "Prompt": "What would you ask of me?",
+      "Options": [
+        {
+          "Response": "I simply wish to test your speaking skills.",
+          "DestinationId": { "Id": "002g" }
+        },
+        {
+          "Response": "Nothing yet. Thank you for understanding.",
+          "DestinationId": { "Id": "003g" }
+        }
+      ]
+    },
+    {
+      "Id": { "Id": "002g" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": "Assets/Art/Resources/UI/Neutral.png"
+      },
+      "Prompt": "I simply wish to test your speaking skills.",
+      "DestinationId": { "Id": "001" }
+    },
+    {
+      "Id": { "Id": "003g" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": "Assets/Art/Resources/UI/Neutral.png"
+      },
+      "Prompt": "Nothing yet. Thank you for understanding.",
+      "DestinationId": { "Id": "001c" }
+    }
+  ],
+  "body-nodes": [
+    {
+      "Id": { "Id": "001" },
+      "Type": "Branching",
+      "Speaker": {
+        "Name": "Baldur, The Cheerful",
+        "PortraitPath": "Assets/Art/Resources/UI/Pleased.png"
+      },
+      "Prompt": "Alright! A challenge. Then simply talk to me. It is easy.",
+      "Options": [
+        {
+          "Response": "Excellent! Let us proceed. How are you?",
+          "DestinationId": { "Id": "002" }
+        },
+        {
+          "Response": "Hmm lets try something more complex. Why were you named Baldur? Was it a joke?",
+          "DestinationId": { "Id": "004" }
+        },
+        {
+          "Response": "Odin and Frigg? Like the Norse gods?",
+          "DestinationId": { "Id": "006" }
+        },
+        {
+          "Response": "Nevermind it.",
+          "DestinationId": { "Id": "010" }
+        }
+      ]
+    },
+    {
+      "Id": { "Id": "002" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": "Assets/Art/Resources/UI/Neutral.png"
+      },
+      "Prompt": "Excellent! Let us proceed. How are you?",
+      "DestinationId": { "Id": "003" }
+    },
+    {
+      "Id": { "Id": "003" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Baldur, The Cheerful",
+        "PortraitPath": "Assets/Art/Resources/UI/Neutral.png"
+      },
+      "Prompt": "I am wonderful! I feel as though I'm absolutely radiant.",
+      "DestinationId": { "Id": "008" }
+    },
+    {
+      "Id": { "Id": "004" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": "Assets/Art/Resources/UI/Thinking.png"
+      },
+      "Prompt": "Hmm lets try something more complex. Why were you named Baldur? Was it a joke?",
+      "DestinationId": { "Id": "005" }
+    },
+    {
+      "Id": { "Id": "005" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Baldur, The Cheerful",
+        "PortraitPath": "Assets/Art/Resources/UI/Neutral.png"
+      },
+      "Prompt": "It was not of jest. I was named so due to my bright and shining personality.",
+      "DestinationId": { "Id": "008" }
+    },
+    {
+      "Id": { "Id": "006" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": "Assets/Art/Resources/UI/Shocked.png"
+      },
+      "Prompt": "Odin and Frigg? Like the Norse gods?",
+      "DestinationId": { "Id": "007" }
+    },
+    {
+      "Id": { "Id": "007" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Baldur, The Cheerful",
+        "PortraitPath": "Assets/Art/Resources/UI/Pleased.png"
+      },
+      "Prompt": "Yes! The very same in fact! Hahah.",
+      "DestinationId": { "Id": "008" }
+    },
+    {
+      "Id": { "Id": "008" },
+      "Type": "Branching",
+      "Speaker": {
+        "Name": "Baldur, The Cheerful",
+        "PortraitPath": "Assets/Art/Resources/UI/Neutral.png"
+      },
+      "Prompt": "Anything more?",
+      "Options": [
+        {
+          "Response": "Well I suppose we could loop dialogue.",
+          "DestinationId": { "Id": "009" }
+        },
+        {
+          "Response": "Thank you. That's all I wanted to know.",
+          "DestinationId": { "Id": "010" }
+        }
+      ]
+    },
+    {
+      "Id": { "Id": "009" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": "Assets/Art/Resources/UI/Thinking.png"
+      },
+      "Prompt": "Well I suppose we could loop dialogue.",
+      "DestinationId": { "Id": "001" }
+    },
+    {
+      "Id": { "Id": "010" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": "Assets/Art/Resources/UI/Pleased.png"
+      },
+      "Prompt": "Thank you. That's all I wanted to know",
+      "DestinationId": { "Id": "001c" }
+    }
+  ],
+  "conclusion-nodes": [
+    {
+      "Id": { "Id": "001c" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Baldur, The Cheerful",
+        "PortraitPath": "Assets/Art/Resources/UI/Pleased.png"
+      },
+      "Prompt": "Have a splendiferous day!",
+      "DestinationId": null
+    }
+  ]
+}
