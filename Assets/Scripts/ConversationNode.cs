@@ -36,4 +36,19 @@ public class ConversationNode {
 
         Options = options;
     }
+
+    public override bool Equals(System.Object obj) {
+        if (obj == null) { return false; }
+
+        ConversationNode node = obj as ConversationNode;
+        if (node == null) {
+            return false;
+        } else {
+            return this.Id.Equals(node.Id);
+        }
+    }
+
+    public override int GetHashCode() {
+        return Id.GetHashCode();
+    }
 }

@@ -13,9 +13,9 @@
         ConversationOption option = obj as ConversationOption;
         if (option == null) {
             return false;
-        }
-        else {
-            return (this.Response.Equals(option.Response, System.StringComparison.InvariantCultureIgnoreCase)) && (this.DestinationId.Equals(option.DestinationId));
+        } else {
+            return this.Response.Equals(option.Response, System.StringComparison.InvariantCultureIgnoreCase)
+                && this.DestinationId.Equals(option.DestinationId);
         }
     }
 

@@ -21,13 +21,12 @@ public class ConversationController : MonoBehaviour {
     [SerializeField]
     private GameObject PrefabButton;
 
-    private Conversation manager;
+    private Conversation Manager;
 
     void Awake() {
         if (Instance == null) {
             Instance = this;
-        }
-        else if (Instance != this) {
+        } else if (Instance != this) {
             Destroy(this);
         }
     }
@@ -41,15 +40,14 @@ public class ConversationController : MonoBehaviour {
         DialogueOverlay.SetActive(isDialogueVisible);
     }
 
-    public void UpdateDialogue(ConversationNodeId id) {
+    private void UpdateDialogue(ConversationNodeId id) {
         if (id == null) {
             IsFinishedConversing = true;
             SetDialogueVisibility(false);
-            manager.SetActiveNode(manager.GreetingNode.Id);
-        }
-        else {
+            Manager.SetActiveNode(Manager.GreetingNode.Id);
+        } else {
             IsFinishedConversing = false;
-            manager.SetActiveNode(id);
+            Manager.SetActiveNode(id);
         }
 
         UpdateDialogue();
@@ -57,9 +55,9 @@ public class ConversationController : MonoBehaviour {
     }
 
     private void UpdateDialogue() {
-        string titleText = manager.GetTitle();
-        string portraitPath = manager.GetPortraitPath();
-        string promptText = manager.GetPrompt();
+        string titleText = Manager.GetTitle();
+        string portraitPath = Manager.GetPortraitPath();
+        string promptText = Manager.GetPrompt();
 
         Title.text = titleText;
         Prompt.text = promptText;
@@ -78,7 +76,7 @@ public class ConversationController : MonoBehaviour {
             Destroy(child.gameObject);
         }
 
-        ConversationNode node = manager.ActiveNode;
+        ConversationNode node = Manager.ActiveNode;
         for (int i = 0; i < node.Options.Count; i++) {
             ConversationOption option = node.Options[i];
             CreateButton(option).transform.SetParent(ButtonPanel, false);
@@ -98,13 +96,13 @@ public class ConversationController : MonoBehaviour {
     }
 
     private void SelectOption(ConversationNodeId id) {
-        manager.SetActiveNode(id);
+        Manager.SetActiveNode(id);
         UpdateDialogue(id);
     }
 
     public void SetDialogueManager(Conversation manager) {
         if (manager != null) {
-            this.manager = manager;
+            this.Manager = manager;
             UpdateDialogue(manager.ActiveNode.Id);
         }
     }

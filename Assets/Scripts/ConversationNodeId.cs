@@ -14,8 +14,7 @@ public class ConversationNodeId {
         ConversationNodeId nodeId = obj as ConversationNodeId;
         if (nodeId == null) {
             return false;
-        }
-        else {
+        } else {
             return this.Id.Equals(nodeId.Id);
         }
     }

@@ -9,4 +9,20 @@ public class Speaker {
         Name = name;
         PortraitPath = portraitPath;
     }
+
+    public override bool Equals(System.Object obj) {
+        if (obj == null) { return false; }
+
+        Speaker speaker = obj as Speaker;
+        if (speaker == null) {
+            return false;
+        } else {
+            return this.Name.Equals(speaker.Name, System.StringComparison.InvariantCultureIgnoreCase)
+                && this.PortraitPath.Equals(speaker.PortraitPath);
+        }
+    }
+
+    public override int GetHashCode() {
+        return Name.GetHashCode() ^ PortraitPath.GetHashCode();
+    }
 }

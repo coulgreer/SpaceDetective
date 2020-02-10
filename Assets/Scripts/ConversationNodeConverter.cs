@@ -20,8 +20,7 @@ public class ConversationNodeConverter : JsonConverter {
         string type = jObject["Type"].Value<string>();
         if ("Linear".Equals(type, StringComparison.InvariantCultureIgnoreCase)) {
             node = CreateLinearNode(jObject);
-        }
-        else if ("Branching".Equals(type, StringComparison.InvariantCultureIgnoreCase)) {
+        } else if ("Branching".Equals(type, StringComparison.InvariantCultureIgnoreCase)) {
             node = CreateBranchingNode(jObject);
         }
 

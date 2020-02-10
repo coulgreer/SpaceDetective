@@ -12,8 +12,11 @@ public class ExploringPlayerState : IPlayerState {
     }
 
     private void TriggerDialogue(PlayerCharacterController controller) {
+        RaycastHit2D hit = Physics2D.Raycast(
+            controller.Rigidbody2D.position,
+            controller.FacingDirection, 1.5f,
+            LayerMask.GetMask("NPC"));
 
-        RaycastHit2D hit = Physics2D.Raycast(controller.Rigidbody2D.position, controller.FacingDirection, 1.5f, LayerMask.GetMask("NPC"));
         if (hit.collider != null) {
             Conversation manager = hit.collider.GetComponent<Conversation>();
             if (manager != null) {

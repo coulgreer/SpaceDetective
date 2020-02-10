@@ -14,13 +14,14 @@ public class Conversation : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        LoadDialogueScript();
+        LoadConversationScript();
     }
 
-    private void LoadDialogueScript() {
+    private void LoadConversationScript() {
         using (StreamReader r = new StreamReader(ManifestPath)) {
             string json = r.ReadToEnd();
-            Dictionary<string, IList<ConversationNode>> dialogueNodesByName = JsonConvert.DeserializeObject<Dictionary<string, IList<ConversationNode>>>(json);
+            Dictionary<string, IList<ConversationNode>> dialogueNodesByName =
+                JsonConvert.DeserializeObject<Dictionary<string, IList<ConversationNode>>>(json);
 
             SetIntroductionNodeStart(dialogueNodesByName);
             SetGrettingNodeStart(dialogueNodesByName);
