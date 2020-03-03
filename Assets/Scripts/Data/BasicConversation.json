@@ -199,7 +199,7 @@
         "PortraitPath": "Assets/Art/Resources/UI/Pleased.png"
       },
       "Prompt": "Have a splendiferous day!",
-      "DestinationId": null
+      "DestinationId": { "Id": "EXIT" }
     }
   ]
 }

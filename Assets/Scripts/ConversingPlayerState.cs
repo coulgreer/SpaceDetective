@@ -1,7 +1,13 @@
-﻿public class ConversingPlayerState : IPlayerState {
-    public void HandleInput(PlayerCharacterController controller) {
-        if (ConversationController.Instance.IsFinishedConversing) {
-            controller.PlayerState = new ExploringPlayerState();
-        }
+﻿using UnityEngine;
+
+public class ConversingPlayerState : IPlayerState {
+    public GameObject Player { get; }
+
+    public ConversingPlayerState(GameObject player) {
+        this.Player = player;
+    }
+
+    public void HandleInput() {
+        /* Do Nothing until menu buttons are add */
     }
 }

@@ -1,0 +1,274 @@
+{
+  "introduction-nodes": [
+    {
+      "Id": { "Id": "001i" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Loki, the Honest",
+        "PortraitPath": ""
+      },
+      "Prompt": "Hmm? Is there something I could help you with?",
+      "DestinationId": { "Id": "002i" }
+    },
+    {
+      "Id": { "Id": "002i" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": "I just wanted to ask you a few questions. Nothing too hard. I promise.",
+      "DestinationId": { "Id": "003i" }
+    },
+    {
+      "Id": { "Id": "003i" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": "So, your name is Loki? Is that correct?",
+      "DestinationId": { "Id": "004i" }
+    },
+    {
+      "Id": { "Id": "004i" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Loki, the Honest",
+        "PortraitPath": ""
+      },
+      "Prompt": "Yes. A-and please ask me more exciting questions... Here, let me start.",
+      "DestinationId": { "Id": "001g" }
+    }
+  ],
+  "greeting-nodes": [
+    {
+      "Id": { "Id": "001g" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Loki, the Honest",
+        "PortraitPath": ""
+      },
+      "Prompt": "How are you? And, have you found that scumbag who murdered the poor sap?",
+      "DestinationId": { "Id": "002g" }
+    },
+    {
+      "Id": { "Id": "002g" },
+      "Type": "Branching",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": "I was hoping you could help me with solving this.",
+      "Options": [
+        {
+          "Response": "Where were you at 12am?",
+          "DestinationId": { "Id": "003g" }
+        },
+        {
+          "Response": "Did you know the victim?",
+          "DestinationId": { "Id": "004g" }
+        },
+        {
+          "Response": "And don't B.S. me again, ok? Or, you'll be in the line of obstructing justice.",
+          "DestinationId": { "Id": "005g" },
+          "Locks": [
+            { "Id": "Key-001" }
+          ]
+        },
+        {
+          "Response": "Nothing yet. Don't stray too far.",
+          "DestinationId": { "Id": "001c" }
+        }
+      ]
+    },
+    {
+      "Id": { "Id": "003g" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": "Where were you at 12am?",
+      "DestinationId": { "Id": "001" }
+    },
+    {
+      "Id": { "Id": "004g" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": "Did you know the victim?",
+      "DestinationId": { "Id": "007" }
+    },
+    {
+      "Id": { "Id": "005g" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": "And don't B.S. me again, ok? Or, you'll be in the line of obstructing justice. So...",
+      "DestinationId": { "Id": "002g" }
+    }
+  ],
+  "body-nodes": [
+    {
+      "Id": { "Id": "001" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Loki, the Honest",
+        "PortraitPath": ""
+      },
+      "Prompt": "Straight to it then!",
+      "DestinationId": { "Id": "002" }
+    },
+    {
+      "Id": { "Id": "002" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Loki, the Honest",
+        "PortraitPath": ""
+      },
+      "Prompt": "My, my you're ever so eager. Suppose they got the right person for the job.",
+      "DestinationId": { "Id": "003" }
+    },
+    {
+      "Id": { "Id": "003" },
+      "Type": "Branching",
+      "Speaker": {
+        "Name": "Loki, the Honest",
+        "PortraitPath": ""
+      },
+      "Prompt": "I was simply sleeping.",
+      "Options": [
+        {
+          "Response": ":: Hmm I doubt that's the truth. He seems more akin to a night owl. ::",
+          "DestinationId": { "Id": "004" },
+          "Key": { "Id": "Key-001" }
+        },
+        {
+          "Response": ":: He must be telling the truth. Who would lie to a law enforcer? ::",
+          "DestinationId": { "Id": "005" }
+        }
+      ]
+    },
+    {
+      "Id": { "Id": "004" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": ":: Hmm I doubt that's the truth. He seems more akin to a night owl. ::",
+      "DestinationId": { "Id": "006" }
+    },
+    {
+      "Id": { "Id": "005" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": ":: He must be telling the truth. Who would lie to a law enforcer? ::",
+      "DestinationId": { "Id": "006" }
+    },
+    {
+      "Id": { "Id": "006" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": "Ok...",
+      "DestinationId": { "Id": "007" }
+    },
+    {
+      "Id": { "Id": "007" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Loki, the Honest",
+        "PortraitPath": ""
+      },
+      "Prompt": "Y'know I heard that the victim and his spouse had some problems. I heard them yelling after midnight in the dining cart. Spicy stuff to hear honestly.",
+      "DestinationId": { "Id": "012" },
+      "HiddenDestinationId": { "Id": "008" }
+    },
+    {
+      "Id": { "Id": "008" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": "Didn't you say you were asleep by midnight?",
+      "DestinationId": { "Id": "009" },
+      "Locks": [
+        { "Id": "Key-001" }
+      ]
+    },
+    {
+      "Id": { "Id": "009" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Loki, the Honest",
+        "PortraitPath": ""
+      },
+      "Prompt": "W-well -- Alright, so I was up past midnight. So, what? To be honest I was asleep by 10pm, but I heard a loud smashing. Then, I went to yell to keep it down, but stumbled upon the juicy drama between the victim and their spouse, and THAT is the gods honest truth.",
+      "DestinationId": { "Id": "010" }
+    },
+    {
+      "Id": { "Id": "010" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": "See that wasn't all so bad thanks for the whole story.",
+      "DestinationId": { "Id": "011" }
+    },
+    {
+      "Id": { "Id": "011" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": ":: Hmm? A loud crash in the middle of the night? ::",
+      "DestinationId": { "Id": "012" }
+    },
+    {
+      "Id": { "Id": "012" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Detective",
+        "PortraitPath": ""
+      },
+      "Prompt": "Thanks for the truth.",
+      "DestinationId": { "Id": "013" }
+    },
+    {
+      "Id": { "Id": "013" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Loki, the Honest",
+        "PortraitPath": ""
+      },
+      "Prompt": "Not at all. Anything else?",
+      "DestinationId": { "Id": "002g" }
+    }
+  ],
+  "conclusion-nodes": [
+    {
+      "Id": { "Id": "001c" },
+      "Type": "Linear",
+      "Speaker": {
+        "Name": "Loki, the Honest",
+        "PortraitPath": ""
+      },
+      "Prompt": "No problem.",
+      "DestinationId": { "Id": "EXIT" }
+    }
+  ]
+}

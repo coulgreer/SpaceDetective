@@ -3,27 +3,19 @@
 public class ExploringPlayerState : IPlayerState {
     private const float Speed = 3.0f;
 
-    public void HandleInput(PlayerCharacterController controller) {
+    public GameObject Player { get; }
+
+    public ExploringPlayerState(GameObject player) {
+        this.Player = player;
+    }
+
+    public void HandleInput() {
+        PlayerCharacterController controller = Player.GetComponent<PlayerCharacterController>();
+
         UpdatePosition(controller);
 
         if (Input.GetKeyDown(KeyCode.X)) {
-            TriggerDialogue(controller);
-        }
-    }
-
-    private void TriggerDialogue(PlayerCharacterController controller) {
-        RaycastHit2D hit = Physics2D.Raycast(
-            controller.Rigidbody2D.position,
-            controller.FacingDirection, 1.5f,
-            LayerMask.GetMask("NPC"));
-
-        if (hit.collider != null) {
-            Conversation manager = hit.collider.GetComponent<Conversation>();
-            if (manager != null) {
-                controller.PlayerState = new ConversingPlayerState();
-                ConversationController.Instance.SetDialogueManager(manager);
-                ConversationController.Instance.SetDialogueVisibility(true);
-            }
+            TriggerConversation(controller);
         }
     }
 
@@ -40,5 +32,22 @@ public class ExploringPlayerState : IPlayerState {
         Vector2 position = controller.Rigidbody2D.position;
         position += move * Speed * Time.deltaTime;
         controller.Rigidbody2D.MovePosition(position);
+    }
+
+    private void TriggerConversation(PlayerCharacterController controller) {
+        RaycastHit2D hit = Physics2D.Raycast(
+            controller.Rigidbody2D.position,
+            controller.FacingDirection, 1.5f,
+            LayerMask.GetMask("NPC"));
+
+        if (hit.collider != null) {
+            Conversation npcConversation = hit.collider.GetComponent<Conversation>();
+            if (npcConversation != null) {
+                controller.PlayerState = new ConversingPlayerState(Player);
+                ConversationController.Instance.SetPlayer(Player);
+                ConversationController.Instance.SetConversation(npcConversation);
+                ConversationController.Instance.SetDialogueVisibility(true);
+            }
+        }
     }
 }

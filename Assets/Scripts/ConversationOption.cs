@@ -1,11 +1,26 @@
-﻿public class ConversationOption {
+﻿public class ConversationOption : IConversationOption {
     public string Response { get; }
-    public ConversationNodeId DestinationId { get; }
+    public ConversationNodeId DefaultDestinationId { get; }
+    public ConversationNodeId HiddenDestinationId { get; }
+    public bool IsHidden { get { return false; } }
 
-    public ConversationOption(string response, ConversationNodeId destinationId) {
-        Response = response;
-        DestinationId = destinationId;
+    public KeyId KeyId { get { return KeyId.EmptyKeyId; } }
+
+    public ConversationOption(
+        string response,
+        ConversationNodeId defaultDestinationId,
+        ConversationNodeId hiddenDestinationId) {
+
+        this.Response = response;
+
+        this.DefaultDestinationId = defaultDestinationId;
+        this.HiddenDestinationId = hiddenDestinationId;
     }
+
+    public ConversationOption(
+        string response,
+        ConversationNodeId defaultDestinationId)
+        : this(response, defaultDestinationId, ConversationNodeId.EmptyId) { }
 
     public override bool Equals(System.Object obj) {
         if (obj == null) { return false; }
@@ -15,11 +30,12 @@
             return false;
         } else {
             return this.Response.Equals(option.Response, System.StringComparison.InvariantCultureIgnoreCase)
-                && this.DestinationId.Equals(option.DestinationId);
+                && this.DefaultDestinationId.Equals(option.DefaultDestinationId)
+                && this.HiddenDestinationId.Equals(option.HiddenDestinationId);
         }
     }
 
     public override int GetHashCode() {
-        return Response.GetHashCode() ^ DestinationId.GetHashCode();
+        return Response.GetHashCode() ^ DefaultDestinationId.GetHashCode() ^ HiddenDestinationId.GetHashCode();
     }
 }

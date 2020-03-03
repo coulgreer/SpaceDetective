@@ -1,24 +1,26 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 
-[JsonConverter(typeof(ConversationNodeConverter))]
-public class ConversationNode {
+public class ConversationNode : IConversationNode {
+
     public ConversationNodeId Id { get; }
     public Speaker Speaker { get; }
     public string Prompt { get; }
-    public IList<ConversationOption> Options { get; }
+    public IList<IConversationOption> Options { get; }
+    public bool IsHidden { get; }
 
     private ConversationNode(ConversationNodeId id, Speaker speaker, string prompt) {
         Id = id;
         Speaker = speaker;
         Prompt = prompt;
+        IsHidden = false;
     }
 
     public ConversationNode(
         ConversationNodeId id,
         Speaker speaker,
         string prompt,
-        IList<ConversationOption> options) : this(id, speaker, prompt) {
+        IList<IConversationOption> options)
+        : this(id, speaker, prompt) {
 
         Options = options;
     }
@@ -27,11 +29,31 @@ public class ConversationNode {
         ConversationNodeId id,
         Speaker speaker,
         string prompt,
-        ConversationNodeId destinationId) : this(id, speaker, prompt) {
+        ConversationNodeId destinationId)
+        : this(id, speaker, prompt) {
 
-        ConversationOption option = new ConversationOption("[continue...]", destinationId);
+        IConversationOption option = new ConversationOption("[continue...]", destinationId);
 
-        List<ConversationOption> options = new List<ConversationOption>();
+        List<IConversationOption> options = new List<IConversationOption>();
+        options.Add(option);
+
+        Options = options;
+    }
+
+    public ConversationNode(
+        ConversationNodeId id,
+        Speaker speaker,
+        string prompt,
+        ConversationNodeId defaultDestinationId,
+        ConversationNodeId hiddenDestinationId)
+        : this(id, speaker, prompt) {
+
+        IConversationOption option = new ConversationOption(
+            "[continue...]",
+            defaultDestinationId,
+            hiddenDestinationId);
+
+        List<IConversationOption> options = new List<IConversationOption>();
         options.Add(option);
 
         Options = options;

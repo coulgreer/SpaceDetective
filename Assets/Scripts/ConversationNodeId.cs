@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
 
-public class ConversationNodeId {
+public struct ConversationNodeId {
+    public static readonly ConversationNodeId EmptyId = new ConversationNodeId("");
+    public static readonly ConversationNodeId ExitId = new ConversationNodeId("EXIT");
+
     public string Id { get; }
 
     [JsonConstructor]
@@ -11,10 +14,10 @@ public class ConversationNodeId {
     public override bool Equals(System.Object obj) {
         if (obj == null) { return false; }
 
-        ConversationNodeId nodeId = obj as ConversationNodeId;
-        if (nodeId == null) {
+        if (!(obj is ConversationNodeId)) {
             return false;
         } else {
+            ConversationNodeId nodeId = (ConversationNodeId)obj;
             return this.Id.Equals(nodeId.Id);
         }
     }

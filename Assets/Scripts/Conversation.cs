@@ -4,13 +4,14 @@ using UnityEngine;
 using Newtonsoft.Json;
 
 public class Conversation : MonoBehaviour {
-    public ConversationNode ActiveNode { get; private set; }
-    public ConversationNode GreetingNode { get; private set; }
+
+    public IConversationNode ActiveNode { get; private set; }
+    public IConversationNode GreetingNode { get; private set; }
 
     [SerializeField]
     private string ManifestPath;
 
-    private IDictionary<ConversationNodeId, ConversationNode> DialogueNodesByID;
+    private IDictionary<ConversationNodeId, IConversationNode> DialogueNodesByID;
 
     // Start is called before the first frame update
     void Start() {
@@ -20,8 +21,8 @@ public class Conversation : MonoBehaviour {
     private void LoadConversationScript() {
         using (StreamReader r = new StreamReader(ManifestPath)) {
             string json = r.ReadToEnd();
-            Dictionary<string, IList<ConversationNode>> dialogueNodesByName =
-                JsonConvert.DeserializeObject<Dictionary<string, IList<ConversationNode>>>(json);
+            Dictionary<string, IList<IConversationNode>> dialogueNodesByName =
+                JsonConvert.DeserializeObject<Dictionary<string, IList<IConversationNode>>>(json);
 
             SetIntroductionNodeStart(dialogueNodesByName);
             SetGrettingNodeStart(dialogueNodesByName);
@@ -29,37 +30,37 @@ public class Conversation : MonoBehaviour {
         }
     }
 
-    private void SetIntroductionNodeStart(Dictionary<string, IList<ConversationNode>> dictionary) {
-        IList<ConversationNode> introductionNodes = dictionary["introduction-nodes"];
+    private void SetIntroductionNodeStart(Dictionary<string, IList<IConversationNode>> dictionary) {
+        IList<IConversationNode> introductionNodes = dictionary["introduction-nodes"];
 
         ActiveNode = introductionNodes[0];
     }
 
-    private void SetGrettingNodeStart(Dictionary<string, IList<ConversationNode>> dictionary) {
-        IList<ConversationNode> greetingNodes = dictionary["greeting-nodes"];
+    private void SetGrettingNodeStart(Dictionary<string, IList<IConversationNode>> dictionary) {
+        IList<IConversationNode> greetingNodes = dictionary["greeting-nodes"];
 
         GreetingNode = greetingNodes[0];
     }
 
-    private IDictionary<ConversationNodeId, ConversationNode> ParseToDictionaryById(
-        Dictionary<string, IList<ConversationNode>> dictionary) {
+    private IDictionary<ConversationNodeId, IConversationNode> ParseToDictionaryById(
+        Dictionary<string, IList<IConversationNode>> dictionary) {
 
-        IDictionary<ConversationNodeId, ConversationNode> tempDictionary =
-            new Dictionary<ConversationNodeId, ConversationNode>();
+        IDictionary<ConversationNodeId, IConversationNode> tempDictionary =
+            new Dictionary<ConversationNodeId, IConversationNode>();
 
-        foreach (ConversationNode n in dictionary["introduction-nodes"]) {
+        foreach (IConversationNode n in dictionary["introduction-nodes"]) {
             tempDictionary.Add(n.Id, n);
         }
 
-        foreach (ConversationNode n in dictionary["greeting-nodes"]) {
+        foreach (IConversationNode n in dictionary["greeting-nodes"]) {
             tempDictionary.Add(n.Id, n);
         }
 
-        foreach (ConversationNode n in dictionary["body-nodes"]) {
+        foreach (IConversationNode n in dictionary["body-nodes"]) {
             tempDictionary.Add(n.Id, n);
         }
 
-        foreach (ConversationNode n in dictionary["conclusion-nodes"]) {
+        foreach (IConversationNode n in dictionary["conclusion-nodes"]) {
             tempDictionary.Add(n.Id, n);
         }
 
@@ -67,7 +68,7 @@ public class Conversation : MonoBehaviour {
     }
 
     public void SetActiveNode(ConversationNodeId id) {
-        if (id != null) {
+        if (!ConversationNodeId.ExitId.Equals(id) && !ConversationNodeId.EmptyId.Equals(id)) {
             ActiveNode = DialogueNodesByID[id];
         }
     }
@@ -82,5 +83,13 @@ public class Conversation : MonoBehaviour {
 
     public string GetPrompt() {
         return ActiveNode.Prompt;
+    }
+
+    public bool IsNodeHidden(ConversationNodeId id) {
+        if (!DialogueNodesByID.ContainsKey(id)) { return true; }
+
+        IConversationNode targetNode = DialogueNodesByID[id];
+
+        return targetNode.IsHidden;
     }
 }

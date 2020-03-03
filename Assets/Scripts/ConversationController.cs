@@ -4,6 +4,13 @@ using UnityEngine.UI;
 using TMPro;
 
 public class ConversationController : MonoBehaviour {
+
+    public delegate void ConversingEventHandler();
+    public static event ConversingEventHandler Conversing;
+
+    public delegate void ConversedEventHandler();
+    public static event ConversedEventHandler Conversed;
+
     public static ConversationController Instance;
 
     public bool IsFinishedConversing { get; private set; }
@@ -21,7 +28,16 @@ public class ConversationController : MonoBehaviour {
     [SerializeField]
     private GameObject PrefabButton;
 
-    private Conversation Manager;
+    private Conversation Conversation;
+    private GameObject Player;
+
+    void OnEnable() {
+        Conversed += delegate { SetDialogueVisibility(false); };
+    }
+
+    void OnDisable() {
+        Conversed -= delegate { SetDialogueVisibility(false); };
+    }
 
     void Awake() {
         if (Instance == null) {
@@ -31,33 +47,41 @@ public class ConversationController : MonoBehaviour {
         }
     }
 
-    // Start is called before the first frame update
     void Start() {
-        DialogueOverlay.SetActive(false);
+        SetDialogueVisibility(false);
     }
 
     public void SetDialogueVisibility(bool isDialogueVisible) {
+        if (isDialogueVisible) {
+            Conversing?.Invoke();
+        }
+
         DialogueOverlay.SetActive(isDialogueVisible);
     }
 
-    private void UpdateDialogue(ConversationNodeId id) {
-        if (id == null) {
-            IsFinishedConversing = true;
-            SetDialogueVisibility(false);
-            Manager.SetActiveNode(Manager.GreetingNode.Id);
+    public void SetConversation(Conversation conversation) {
+        if (conversation != null) {
+            this.Conversation = conversation;
+            UpdatePrompt(conversation.ActiveNode.Id);
+        }
+    }
+
+    private void UpdatePrompt(ConversationNodeId id) {
+        if (ConversationNodeId.ExitId.Equals(id)) {
+            Conversation.SetActiveNode(Conversation.GreetingNode.Id);
+            Conversed?.Invoke();
         } else {
-            IsFinishedConversing = false;
-            Manager.SetActiveNode(id);
+            Conversation.SetActiveNode(id);
         }
 
-        UpdateDialogue();
+        UpdateConversation();
         UpdateOptions();
     }
 
-    private void UpdateDialogue() {
-        string titleText = Manager.GetTitle();
-        string portraitPath = Manager.GetPortraitPath();
-        string promptText = Manager.GetPrompt();
+    private void UpdateConversation() {
+        string titleText = Conversation.GetTitle();
+        string portraitPath = Conversation.GetPortraitPath();
+        string promptText = Conversation.GetPrompt();
 
         Title.text = titleText;
         Prompt.text = promptText;
@@ -76,34 +100,46 @@ public class ConversationController : MonoBehaviour {
             Destroy(child.gameObject);
         }
 
-        ConversationNode node = Manager.ActiveNode;
-        for (int i = 0; i < node.Options.Count; i++) {
-            ConversationOption option = node.Options[i];
-            CreateButton(option).transform.SetParent(ButtonPanel, false);
+        IConversationNode node = Conversation.ActiveNode;
+        foreach (IConversationOption option in node.Options) {
+            if (!option.IsHidden) {
+                CreateButton(option).transform.SetParent(ButtonPanel, false);
+            }
         }
     }
 
-    private GameObject CreateButton(ConversationOption option) {
+    private GameObject CreateButton(IConversationOption option) {
         GameObject buttonObject = Instantiate(PrefabButton);
 
         Button buttonComponent = buttonObject.GetComponent<Button>();
         buttonComponent.GetComponentInChildren<TMP_Text>().text = option.Response;
         buttonComponent.onClick.AddListener(delegate {
-            SelectOption(option.DestinationId);
+            GrantKey(option);
+
+            if (!Conversation.IsNodeHidden(option.HiddenDestinationId)) {
+                SelectOption(option.HiddenDestinationId);
+            } else {
+                SelectOption(option.DefaultDestinationId);
+            }
         });
 
         return buttonObject;
     }
 
     private void SelectOption(ConversationNodeId id) {
-        Manager.SetActiveNode(id);
-        UpdateDialogue(id);
+        Conversation.SetActiveNode(id);
+        UpdatePrompt(id);
     }
 
-    public void SetDialogueManager(Conversation manager) {
-        if (manager != null) {
-            this.Manager = manager;
-            UpdateDialogue(manager.ActiveNode.Id);
+    private void GrantKey(IKey key) {
+        Inventory inventory = Player.GetComponent<Inventory>();
+
+        inventory.AddKey(key);
+    }
+
+    public void SetPlayer(GameObject player) {
+        if (player != null) {
+            this.Player = player;
         }
     }
 }
